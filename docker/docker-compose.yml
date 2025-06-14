@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  cassandra:
+    image: cassandra:4.1
+    container_name: url_shortener_cassandra
+    ports:
+      - "9042:9042"
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+    environment: {}
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD", "cqlsh", "-u", "cassandra", "-p", "cassandra", "-e", "describe keyspaces"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
+    networks:
+      - url_shortener_network
+
+  urlshortenerapi:
+    build:
+      context: ../
+      dockerfile: src/UrlShortener.Api/Dockerfile
+    container_name: url_shortener_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - Cassandra__ContactPoints=cassandra
+      - Cassandra__Port=9042
+      - Cassandra__KeyspaceName=url_shortener
+    networks:
+      - url_shortener_network
+
+networks:
+  url_shortener_network:
+    driver: bridge
+
+volumes:
+  cassandra_data:
