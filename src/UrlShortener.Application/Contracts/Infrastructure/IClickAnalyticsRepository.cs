@@ -6,5 +6,6 @@ namespace UrlShortener.Application.Contracts.Infrastructure
     {
         Task<IEnumerable<ClickAnalytics>> GetClickAnalyticsByShortCode(string shortCode);
         Task AddAsync(ClickAnalytics clickAnalytics);
+        Task DeleteByShortCode(string shortCode);
     }
 }

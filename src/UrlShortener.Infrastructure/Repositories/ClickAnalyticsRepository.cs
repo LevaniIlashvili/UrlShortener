@@ -29,6 +29,12 @@ namespace UrlShortener.Infrastructure.Repositories
                   FROM click_analytics WHERE short_code = ?", shortCode
                 );
         }
+
+        public async Task DeleteByShortCode(string shortCode)
+        {
+            await _session.ExecuteAsync(
+                new SimpleStatement("DELETE FROM click_analytics WHERE short_code = ?", shortCode)
+            );
         }
     }
 }
