@@ -24,7 +24,11 @@ namespace UrlShortener.Infrastructure.Repositories
 
         public async Task<IEnumerable<ClickAnalytics>> GetClickAnalyticsByShortCode(string shortCode)
         {
-            return await _mapper.FetchAsync<ClickAnalytics>("SELECT * FROM click_analytics WHERE short_code = ?", shortCode);
+            return await _mapper.FetchAsync<ClickAnalytics>(
+                @"SELECT short_code, click_date, user_agent, ip_address
+                  FROM click_analytics WHERE short_code = ?", shortCode
+                );
+        }
         }
     }
 }
