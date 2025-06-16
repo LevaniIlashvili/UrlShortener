@@ -19,7 +19,10 @@ namespace UrlShortener.Infrastructure.Repositories
 
         public async Task<Url?> GetByShortCodeAsync(string shortCode)
         {
-            var url = await _mapper.SingleOrDefaultAsync<Url>("SELECT * FROM urls WHERE short_code = ?", shortCode);
+            var url = await _mapper.SingleOrDefaultAsync<Url>(
+                @"SELECT short_code, original_url, created_at, expiration_date, click_count, is_active
+                  FROM urls WHERE short_code = ?", shortCode
+                );
             return url;
         }
 
