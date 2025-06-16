@@ -1,5 +1,6 @@
 using UrlShortener.Infrastructure;
 using UrlShortener.Application;
+using UrlShortener.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 
