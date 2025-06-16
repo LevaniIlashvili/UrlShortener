@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UrlShortener.Application.Contracts.Infrastructure;
 using UrlShortener.Infrastructure.Cassandra;
 using UrlShortener.Infrastructure.Repositories;
+using UrlShortener.Infrastructure.Services;
 
 namespace UrlShortener.Infrastructure
 {
@@ -13,6 +14,8 @@ namespace UrlShortener.Infrastructure
             services.Configure<CassandraSettings>(configuration.GetSection("Cassandra"));
 
             services.AddSingleton<CassandraDbContext>();
+
+            services.AddSingleton<IBase62Encoder, Base62Encoder>();
 
             services.AddScoped<IUrlRepository, UrlRepository>();
             services.AddScoped<IClickAnalyticsRepository, ClickAnalyticsRepository>();
