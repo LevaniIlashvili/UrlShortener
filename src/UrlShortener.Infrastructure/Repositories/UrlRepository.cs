@@ -26,17 +26,6 @@ namespace UrlShortener.Infrastructure.Repositories
             return url;
         }
 
-        public async Task<Url?> GetByOriginalUrlAsync(string originalUrl)
-        {
-            var url = await _mapper.SingleOrDefaultAsync<Url>("SELECT * FROM urls WHERE original_url = ?", originalUrl);
-            return url;
-        }
-
-        public async Task IncreaseClickCount(string shortCode)
-        {
-            await _mapper.ExecuteAsync("UPDATE urls SET click_count = click_count + 1 WHERE short_code = ?", shortCode);
-        }
-
         public async Task AddAsync(Url url)
         {
             await _mapper.InsertAsync(url);
