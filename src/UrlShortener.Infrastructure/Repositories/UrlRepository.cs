@@ -9,12 +9,26 @@ namespace UrlShortener.Infrastructure.Repositories
     public class UrlRepository : IUrlRepository
     {
         private readonly ISession _session;
-        private readonly IMapper _mapper;
+        private readonly Mapper _mapper;
 
         public UrlRepository(CassandraDbContext dbContext)
         {
             _session = dbContext.GetSession();
             _mapper = new Mapper(_session);
+        }
+        
+        public async Task DeactivateExpiredUrlsAsync()
+        {
+            
+            var selectQuery = "SELECT short_code FROM urls WHERE is_active = true AND expiration_date <= toTimestamp(now()) ALLOW FILTERING";
+            var rows = await _session.ExecuteAsync(new SimpleStatement(selectQuery));
+
+            foreach (var row in rows)
+            {
+                var shortCode = row.GetValue<string>("short_code");
+                var updateQuery = "UPDATE urls SET is_active = false WHERE short_code = ?";
+                await _session.ExecuteAsync(new SimpleStatement(updateQuery, shortCode));
+            }
         }
 
         public async Task<Url?> GetByShortCodeAsync(string shortCode)

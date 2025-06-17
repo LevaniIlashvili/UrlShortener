@@ -8,5 +8,6 @@ namespace UrlShortener.Application.Contracts.Infrastructure
         Task AddAsync(Url url);
         Task UpdateAsync(Url url);
         Task DeleteAsync(string shortCode);
+        Task DeactivateExpiredUrlsAsync();
     }
 }
