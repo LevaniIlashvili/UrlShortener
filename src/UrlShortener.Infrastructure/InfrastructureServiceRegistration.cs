@@ -21,6 +21,9 @@ namespace UrlShortener.Infrastructure
             services.AddScoped<IClickAnalyticsRepository, ClickAnalyticsRepository>();
 
             services.AddHostedService<CassandraMigrationService>();
+
+            services.AddHostedService<UrlExpirationService>();
+
             return services;
         }
     }
