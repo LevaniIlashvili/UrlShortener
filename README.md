@@ -97,7 +97,7 @@ Each redirect:
 To run the application with Cassandra and the API together:
 
 ```bash
-git clone [https://github.com/your-username/url-shortener.git](https://github.com/your-username/url-shortener.git)
+git clone https://github.com/your-username/url-shortener.git
 cd url-shortener
 cd docker
 docker-compose up --build
